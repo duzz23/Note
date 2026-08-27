@@ -4,7 +4,6 @@ from models.entity import Entity
 from mixins.serializable import Serializable
 
 
-
 class Category(Entity, Serializable):
 
     serializable_fields = (
@@ -20,7 +19,3 @@ class Category(Entity, Serializable):
             name = name,
             description = description
         )
-
-
-
-

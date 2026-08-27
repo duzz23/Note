@@ -19,5 +19,3 @@ class Serializable:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Self:
         return cls(**data)
-
-

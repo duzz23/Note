@@ -1,5 +1,4 @@
 from uuid import UUID
-
 from models.base import Base
 
 class Entity(Base):
@@ -18,5 +17,3 @@ class Entity(Base):
 
     def __repr__(self) -> str:
         return  str(self)
-
-

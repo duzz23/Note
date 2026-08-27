@@ -1,10 +1,13 @@
 from uuid import uuid4
+
+from models.note import Note
 from settings import CATEGORIES_STORAGE_PATH
 from models.category import Category
 from storage.csv_storage import CSVStorage
+from storage.сategory_storage import category_storage
 
 
-def main():
+def demo_create_and_read():
     category = Category.create(
         name='Test category',
         description='Test description'
@@ -40,6 +43,31 @@ def main():
     category_storage.load()
     print(category_storage.data)
 
+
+def example_category_storege():
+    category = category_storage.create(
+        name="New category",
+        description="New description",
+    )
+    print(category)
+    for c in category_storage.all():
+        print(c)
+
+    test_category_storage = category_storage.get_by_name("New category")
+    print(test_category_storage)
+
+def main():
+    category = category_storage.get_by_name("New category")
+    note_1 = Note.create(
+        name = "мои заметки",
+        description = "первая заметка",
+        title = "Что сделать сегодня",
+        text = "Завоевать весь мир",
+        category = category
+    )
+
+    print(note_1)
+    print([note_1])
 
 if __name__ == '__main__':
     main()
