@@ -56,3 +56,5 @@ Temporary Items
 *.log
 local_settings.py
 .env
+
+data/

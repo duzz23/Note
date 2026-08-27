@@ -1,6 +1,5 @@
 from uuid import uuid4
-from pathlib import Path
-
+from settings import CATEGORIES_STORAGE_PATH
 from models.category import Category
 from storage.csv_storage import CSVStorage
 
@@ -29,10 +28,8 @@ def main():
     print("Save and Load")
 
     # путь от текущего файла
-    current_path = Path(__file__).parent
-    category_path = current_path / "categories.csv"
     category_storage = CSVStorage(
-        filepath=category_path,
+        filepath=CATEGORIES_STORAGE_PATH,
         model_class=Category,
 
     )
@@ -42,7 +39,6 @@ def main():
     # category_storage.save()
     category_storage.load()
     print(category_storage.data)
-
 
 
 if __name__ == '__main__':
