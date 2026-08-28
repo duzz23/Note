@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from models.note import Note
-from settings import CATEGORIES_STORAGE_PATH
+from settings import CATEGORIES_STORAGE_PATH, PRODUCTS_STORAGE_PATH
 from models.category import Category
 from storage.csv_storage import CSVStorage
 from storage.сategory_storage import category_storage
@@ -46,28 +46,43 @@ def demo_create_and_read():
 
 def example_category_storege():
     category = category_storage.create(
-        name="New category",
+        name="лопата",
         description="New description",
     )
-    print(category)
-    for c in category_storage.all():
-        print(c)
+    # print(category)
+    # for c in category_storage.all():
+    #     print(c)
 
-    test_category_storage = category_storage.get_by_name("New category")
+    test_category_storage = category_storage.get_by_name("лопата")
     print(test_category_storage)
 
 def main():
-    category = category_storage.get_by_name("New category")
-    note_1 = Note.create(
+    category = category_storage.create(
+        name="Дом",
+        description="Работа по дому",
+    )
+    note = Note.create(
         name = "мои заметки",
         description = "первая заметка",
         title = "Что сделать сегодня",
         text = "Завоевать весь мир",
         category = category
     )
+    # print([note_1])
+    # print(note_1)
+    storage = CSVStorage(
+        filepath=PRODUCTS_STORAGE_PATH,
+        model_class=Note,
+    )
+    storage.data[note.id] = note
+    storage.save()
+    storage.load()
+    print(storage.data)
+    for note_1 in storage.data.values():
+        print(note_1.category)
+        print(type(note_1.category))
 
-    print(note_1)
-    print([note_1])
+
 
 if __name__ == '__main__':
     main()

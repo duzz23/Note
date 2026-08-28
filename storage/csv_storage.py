@@ -19,9 +19,9 @@ class CSVStorage[T: Serializable | HasID](StorageProtocol):
 
     def save(self) -> None:
         # создаем папку
-        self.filepath.mkdir(parents=True, exist_ok=True)
+        self.filepath.parent.mkdir(parents=True, exist_ok=True)
         # открываем файл
-        with open(self.filepath / "categories.csv", "w") as file:
+        with self.filepath.open('w') as file:
             # записываем данные
             writer = DictWriter(
                 # Записываем в файл
@@ -40,7 +40,6 @@ class CSVStorage[T: Serializable | HasID](StorageProtocol):
         if not self.filepath.exists():
             return None
         # Открываем файл
-        with open(self.filepath / "categories.csv", "r") as file:
             # Читаем файл
             reader = DictReader(file)
             for row in reader:
