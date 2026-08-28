@@ -4,6 +4,7 @@ from models.note import Note
 from settings import CATEGORIES_STORAGE_PATH, PRODUCTS_STORAGE_PATH
 from models.category import Category
 from storage.csv_storage import CSVStorage
+from storage.note_storage import note_storage
 from storage.сategory_storage import category_storage
 
 
@@ -61,28 +62,19 @@ def main():
         name="Дом",
         description="Работа по дому",
     )
-    note = Note.create(
-        name = "мои заметки",
-        description = "первая заметка",
-        title = "Что сделать сегодня",
+
+    new_note = note_storage.create(
+        name = "вторая заметка",
+        description = "новая заментка",
+        title = "работа работа",
         text = "Завоевать весь мир",
         category = category
     )
-    # print([note_1])
-    # print(note_1)
-    storage = CSVStorage(
-        filepath=PRODUCTS_STORAGE_PATH,
-        model_class=Note,
-    )
-    storage.data[note.id] = note
-    storage.save()
-    storage.load()
-    print(storage.data)
-    for note_1 in storage.data.values():
-        print(note_1.category)
-        print(type(note_1.category))
+    print(new_note)
+    print(note_storage.data)
 
-
+    for n in note_storage.all():
+        print(n)
 
 if __name__ == '__main__':
     main()
