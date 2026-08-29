@@ -4,9 +4,9 @@ from settings import CATEGORIES_STORAGE_PATH
 from storage.csv_storage import CSVStorage
 
 
-class CategoryStorage(CSVStorage):
+class CategoryStorage[T: Category](CSVStorage[T]):
     "Хранение типов товара"
-    def __init__(self, filepath: Path, model_class=Category):
+    def __init__(self, filepath: Path, model_class: type[T] = Category):
         super().__init__(filepath, model_class)
 
     # Создать категорию
@@ -16,10 +16,6 @@ class CategoryStorage(CSVStorage):
         self.save()
         return category
 
-    # Получить все категории
-    def all(self) -> list[Category]:
-        return list(self.data.values())
-
     # Поиск по имени
     def get_by_name(self, name: str) -> Category | None:
         for category in self.all():
@@ -28,8 +24,7 @@ class CategoryStorage(CSVStorage):
         return None
 
 category_storage = CategoryStorage(
-    filepath=CATEGORIES_STORAGE_PATH,
-    model_class=Category,
+    filepath=CATEGORIES_STORAGE_PATH
 
 )
 

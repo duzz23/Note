@@ -17,6 +17,9 @@ class CSVStorage[T: Serializable | HasID](StorageProtocol):
         # Кэш-храним данные в словаре
         self.data: dict[UUID, T] = {}
 
+    def all(self) -> list[T]:
+        return list(self.data.values())
+
     def save(self) -> None:
         # создаем папку
         self.filepath.parent.mkdir(parents=True, exist_ok=True)

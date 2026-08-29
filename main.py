@@ -8,73 +8,72 @@ from storage.note_storage import note_storage
 from storage.сategory_storage import category_storage
 
 
-def demo_create_and_read():
-    category = Category.create(
-        name='Test category',
-        description='Test description'
+def create_category():
+    category_storage.create(
+        name="Дом",
+        description="Все что связано с делами по домом"
     )
-    print(category)
-    print()
-    print(category.to_dict())
-    print()
 
-    data = {
-        "id": uuid4(),
-        "name": "New name",
-        "description": "New description",
-    }
-
-    print("New category: from data", data)
-    new_category = Category.from_dict(data)
-    print(new_category)
-
-    print()
-    print("Save and Load")
-
-    # путь от текущего файла
-    category_storage = CSVStorage(
-        filepath=CATEGORIES_STORAGE_PATH,
-        model_class=Category,
-
+    category_storage.create(
+        name="Работа",
+        description="Все что связано с делами по работе"
     )
-    category_storage.data[category.id] = category
-    category_storage.data[new_category.id] = new_category
 
-    # category_storage.save()
-    category_storage.load()
-    print(category_storage.data)
-
-
-def example_category_storege():
-    category = category_storage.create(
-        name="лопата",
-        description="New description",
+    category_storage.create(
+        name="Семья",
+        description="Все что связано с делами с семьей"
     )
-    # print(category)
-    # for c in category_storage.all():
-    #     print(c)
 
-    test_category_storage = category_storage.get_by_name("лопата")
-    print(test_category_storage)
+def create_note():
+    # вытаскиваем котегории
+    home_category = category_storage.get_by_name("Дом")
+    work_category = category_storage.get_by_name("Работа")
+    family_category = category_storage.get_by_name("Семья")
+
+    note_storage.create(
+        name="Крыльцо",
+        description="Расчитать стоимость крыльца",
+        title = "первый этап расчеты",
+        text = "Померить стоимость размеры, расчитать стоимость материалов",
+        category = home_category,
+    )
+
+    note_storage.create(
+        name="Python",
+        description="AI Agents",
+        title = "task",
+        text = "Сделать задачу по доработке агентов",
+        category = work_category,
+    )
+
+    note_storage.create(
+        name="Сын",
+        description="Курсы",
+        title = "Хотел пойти на карате",
+        text = "Посмотреть на районе школы по карате",
+        category = family_category,
+    )
+
 
 def main():
-    category = category_storage.create(
-        name="Дом",
-        description="Работа по дому",
-    )
+    if not category_storage.data:
+        create_category()
+        print("Категории созданы")
 
-    new_note = note_storage.create(
-        name = "вторая заметка",
-        description = "новая заментка",
-        title = "работа работа",
-        text = "Завоевать весь мир",
-        category = category
-    )
-    print(new_note)
-    print(note_storage.data)
+    if not note_storage.data:
+        create_note()
+        print("Заметки созданы")
 
-    for n in note_storage.all():
-        print(n)
+
+    all_category = category_storage.all()
+    for category in all_category:
+        print("Дом", category.name)
+        notes = note_storage.get_by_category(category)
+        for note in notes:
+            print("-", note)
+
+        print()
+
 
 if __name__ == '__main__':
     main()
