@@ -57,6 +57,22 @@ cd notes
 python main.py
 ```
 
+### Запуск через Docker
+
+```bash
+# Сборка образа
+docker build -t notes-app .
+
+# Запуск
+docker run --rm notes-app
+```
+
+Данные сохраняются в директории `data/` внутри контейнера. Чтобы сохранить данные на хост-машине, смонтируйте том:
+
+```bash
+docker run --rm -v $(pwd)/data:/app/data notes-app
+```
+
 ### Как работает main.py
 
 При запуске `main.py` выполняет следующие шаги:
